@@ -14,6 +14,7 @@ const VideoBackground = ({ movieId }) => {
           trailerVideo?.key +
           '?autoplay=1&mute=1&loop=1&showinfo=0&controls=0'
         }
+        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         title='YouTube video player'
       ></iframe>
     </div>

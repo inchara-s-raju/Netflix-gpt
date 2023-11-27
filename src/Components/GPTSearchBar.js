@@ -1,22 +1,65 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import lang from '../utils/languageConstants';
+import openai from '../utils/openai';
+import { API_OPTIONS } from '../utils/constants';
+import { addGptMovieResult } from '../utils/gptSlice';
 
 const GPTSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const searchText = useRef(null);
+  const dispatch = useDispatch();
+
+  // take movie as input, search in TMDB
+  const searchMovieTMDB = async (movie) => {
+    const data = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`,
+      API_OPTIONS
+    );
+    const json = await data.json();
+    return json.results;
+  };
+  const handleSearch = async () => {
+    //make an API call to Open ai and get movie result
+
+    const gptQuery = !searchText.current.value
+      ? 'Tell user to write which type of movies they want'
+      : 'Act as a movie recommendation system and suggest some movies for the query: ' +
+        searchText.current.value +
+        'only give me names of 5 movies, comma seperated like the example result given ahead. Example Result:Gadar,Sholay,Don,Golmal, Koi mil gaya';
+    const gptResults = await openai.chat.completions.create({
+      messages: [{ role: 'user', content: gptQuery }],
+      model: 'gpt-3.5-turbo',
+    });
+    if (!gptResults.choices) {
+      // Error handling
+    }
+
+    // converting result from string to array
+    const getMovies = gptResults.choices?.[0].message?.content.split(',');
+
+    // for each movie i will search TMDB API
+    const promiseArray = getMovies.map((movie) => searchMovieTMDB(movie));
+    const tmdbResult = await Promise.all(promiseArray);
+
+    dispatch(
+      addGptMovieResult({ movieNames: getMovies, movieResults: tmdbResult })
+    );
   };
   return (
-    <div className='pt-[10%] flex justify-center'>
-      <form className='w-1/2 grid grid-cols-12 '>
+    <div className='pt-[4%] flex justify-center'>
+      <form
+        className='w-1/2 grid grid-cols-12 '
+        onSubmit={(e) => e.preventDefault()}
+      >
         <input
+          ref={searchText}
           type='text'
-          className='p-4 my-4 col-span-9 '
+          className='p-4 my-4 col-span-9 rounded-xl'
           placeholder={lang[langKey].gptSearchPlaceholder}
         ></input>
         <button
-          className='py-2 px-4 my-4 bg-red-600 text-white  col-span-3'
+          className='py-2 px-4 my-4 font-medium bg-transparent border border-white border-solid text-white  col-span-3 rounded-xl ml-2'
           onClick={handleSearch}
         >
           {lang[langKey].search}

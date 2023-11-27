@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { useEffect, useState } from 'react';
 import { LOGO, SUPPORTED_LANG, USER_AVATAR } from '../utils/constants';
-import { toggleGPTSearchView } from '../utils/gptSlice';
+import { clearGptSuggestion, toggleGPTSearchView } from '../utils/gptSlice';
 import { changeLanguage } from '../utils/configSlice';
 
 const Header = () => {
@@ -49,6 +49,7 @@ const Header = () => {
   const handleGPTSearchClick = () => {
     //Toggle GPT Search button
     dispatch(toggleGPTSearchView());
+    showGPTSearch && dispatch(clearGptSuggestion());
   };
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
