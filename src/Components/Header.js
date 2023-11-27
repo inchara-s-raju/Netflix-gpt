@@ -77,7 +77,7 @@ const Header = () => {
               </select>
             )}
             <button
-              className='text-white  px-4 mx-4 bg-transparent border border-solid border-slate-300 rounded-md'
+              className='text-white  px-4 mx-4 bg-purple-700 border border-solid border-slate-300 rounded-md'
               onClick={handleGPTSearchClick}
             >
               {showGPTSearch ? 'Home' : 'GPT Search'}
@@ -91,7 +91,8 @@ const Header = () => {
               className='text-white font-bold cursor-pointer p-2'
               onClick={handleClick}
             >
-              ^
+              {' '}
+              ^{' '}
             </span>
           </div>
           {showIcon && (

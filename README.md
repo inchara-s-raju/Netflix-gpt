@@ -36,6 +36,7 @@
 - GPT search page
 - GPt search bar
 - multi-language feature in our app
+- Search TMDB for movies recommended by openai
 
 # Features
 
