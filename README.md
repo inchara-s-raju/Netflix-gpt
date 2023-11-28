@@ -36,7 +36,14 @@
 - GPT search page
 - GPt search bar
 - multi-language feature in our app
-- Search TMDB for movies recommended by openai
+- Get open ai api key
+- Gpt search api call
+- fetched getMovieSuggestions from TMDB
+- Created GPT slice and add data
+- Reused MovieList component to make movie suggestion container
+- .evn file to secure/store api keys and add to .gitignore file
+- Add Memoization
+- Add Responsiveness
 
 # Features
 

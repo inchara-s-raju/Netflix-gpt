@@ -55,11 +55,11 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   };
   return (
-    <div className='absolute w-full px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between'>
-      <img className='w-44' src={LOGO} alt='netflix_logo' />
+    <div className='absolute w-full px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col justify-between md:flex-row  md:justify-between'>
+      <img className='w-44 mx-auto md:mx-0' src={LOGO} alt='netflix_logo' />
       {user && (
         <div>
-          <div className='flex p-2'>
+          <div className='flex p-2 justify-between'>
             {showGPTSearch && (
               <select
                 className='bg-transparent text-white border border-solid border-white rounded-lg'
@@ -85,7 +85,7 @@ const Header = () => {
             <img
               alt='user--icon'
               src={USER_AVATAR}
-              className='w-8 h-8 mt-1'
+              className='hidden md:block w-8 h-8 mt-1'
             ></img>
             <span
               className='text-white font-bold cursor-pointer p-2'
